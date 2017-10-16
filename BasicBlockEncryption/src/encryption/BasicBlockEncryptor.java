@@ -22,7 +22,8 @@ public class BasicBlockEncryptor {
     private static String inputFile;
     private static String outputFile;
     private static byte [] key;
-    private static boolean isEncryption;
+    private enum MODE { ENCRYPT, DECRYPT };
+    private static MODE operation;
 
     // Allow command line arguments (option, key, inputFile, outputFile)
     public static void main(String[] args) throws IOException {
@@ -61,7 +62,7 @@ public class BasicBlockEncryptor {
         long time = System.currentTimeMillis();
         
         // Encrypt or Decrypt
-        if (isEncryption) {
+        if (operation == MODE.ENCRYPT) {
             encrypt(key, inputFile, outputFile);
             System.out.println("Encryption complete!");
             
@@ -424,9 +425,9 @@ public class BasicBlockEncryptor {
     private static void validateInput(String option, String password, String inputFile, String outputFile) {
                
         if (option.equalsIgnoreCase("-e")) {
-            isEncryption = true;
+        	operation = MODE.ENCRYPT;
         } else if (option.equalsIgnoreCase("-d")) {
-            isEncryption = false;
+        	operation = MODE.DECRYPT;
         } else {
             // Throw error
             System.err.println("Error: Invalid option");
